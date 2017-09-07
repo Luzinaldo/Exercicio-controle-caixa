@@ -44,21 +44,15 @@ int main(){
 
 		switch (opcao)
 		{
-		   case 1:
-			 cadastrarConta();
-			 break;
-		   case 2:
-			 escolherOperacao();
-			 break;
-		   case 3:
-		     efetuarOperacao();
-		     break;
-		   case 4:
-			 printf(" ... | Bye bye |... ");
-			 break;
-		   default:
-		   	 printf(" Opção invalida digite ");
-		     break;
+		   case 1: cadastrarConta(); break;
+
+		   case 2: escolherOperacao(); break;
+
+		   case 3: efetuarOperacao(); break;
+
+		   case 4: printf(" ... | Bye bye |... "); break;
+
+		   default: printf(" Opção invalida digite "); break;
 		}
 
 	}while(opcao != 4);
