@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1504796005 source:/home/matheus/Documentos/Exercicio-controle-caixa/main.c
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+	<string.h>
+

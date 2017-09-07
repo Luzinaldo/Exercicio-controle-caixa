@@ -16,26 +16,29 @@ typedef struct{
     char descricao[100];
     int tipo; //Credito ou Debito
 }Historico;
-    Historico historico;
+    Historico historico[TAMCONTA];
 
 typedef struct{
     int data; //dia, mes, ano
     Conta conta;
     Historico historico;
+    float valor;
     char complemento[100];
 }Movimentacao;
-    Movimentacao movimentacao;
+    Movimentacao movimentacao[TAMCONTA];
 
-    int contascadastradasG = 0;
+    int contascadastradasG = 0, contmovDeb = 0;
 
 void CadastroConta();
 void AcessarConta();
+void Operacao();
+void FuncMovimentacaoDeb();
 int main(){
     int opcao;
     setlocale(LC_ALL, "Portuguese");
 
         do{
-            printf("\n\t -------------------------- Gerenciamento de Contas --------------------------\n");
+            printf("\n\t -------------- Fluxo de Caixa --------------\n");
             printf("\n\t1 - Cadastro: ");
             printf("\n\t2 - Acessar Conta: ");
             printf("\n\t3 - Efetuar Operação");
@@ -48,7 +51,7 @@ int main(){
 
                 case 1: CadastroConta(); break;
                 case 2: AcessarConta(); break;
-                case 3: printf("teste3"); break;
+                case 3: Operacao(); break;
                 case 4: printf("\n Saindo..."); break;
                 default: printf("\nOpçao inválida !! "); break;
             }
@@ -99,13 +102,25 @@ void Operacao(){
     switch(operacao){
 
         case 'D':
-            //MOVIMENTAÇÃO CONTAS A PAGAR...
+            FuncMovimentacaoDeb();
         break;
     }
 }
 
-void FuncMovimentacao (){
+void FuncMovimentacaoDeb(){
+    int data;
+    float valor;
+    char descricao[100];
 
+    /*printf("\nDia: ");
+    scanf("%d", &data);*/
+    printf("Valor: ");
+    scanf("%f", &valor);
+    printf("O que foi feito: ");
+    scanf("%s", &descricao);
 
+    movimentacao[contmovDeb].valor = movimentacao[contmovDeb].valor - valor;
+    strcpy(movimentacao[contmovDeb].complemento, descricao);
 
+    contmovDeb++;
 }
