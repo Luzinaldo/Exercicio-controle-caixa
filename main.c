@@ -1,76 +1,70 @@
 #include <stdlib.h>
 #include <stdio.h>
-
+#include <locale.h>
+#include <string.h>
 #define TAMCONTA 100
 
 typedef struct{
 	int codigo;
-	char descricao[100];;
-} Conta;
+	char descricao[100];
+}Conta;
 
 typedef struct{
 	int codigo;
-	char descricao[100];;
+	char descricao[100];
 	char tipo;
-} Historico;
+}Historico;
 
 typedef struct{
 	int dia, mes, ano;
-	Conta conta[1];
-	Historico historico[1];
 	float valor;
 	char complemento[100];
-};
+}Movimentacao;
 
-void cadastrarConta();
-void escolherOperacao();
-void efetuarOperacao();
+    Conta conta[TAMCONTA]; Historico historico[TAMCONTA]; Movimentacao movimentacao[TAMCONTA];
 
-Conta conta[TAMCONTA];
-int contascadastradas = 0;
-int contacorrente = 0;
+    int cadastrarcontasG = 0;
 
 int main(){
+    setlocale(LC_ALL, "Portuguese");
 
-	int opcao;
+	char opcao;
 	printf(" Bem vindo !! ");
 
 	do{
-		printf(" 1 - Cadastrar conta ");
-		printf(" 2 - Escolher conta ");
-		printf(" 3 - Efetuar operação ");
-		printf(" 4 - Sair ");
-		scanf(" %d ", &opcao);
+		printf("\n\t 1 - Cadastrar conta ");
+		printf("\n\t 2 - Escolher conta ");
+		printf("\n\t 3 - Efetuar operação ");
+		printf("\n\t 4 - Sair ");
+		printf("\n\t\t Escolha uma das opções: ");
+		scanf(" %c ", &opcao);
 
-		switch (opcao)
-		{
-		   case 1: cadastrarConta(); break;
+		switch (opcao){
+		   case '1': break;
 
-		   case 2: escolherOperacao(); break;
+		   case '2': break;
 
-		   case 3: efetuarOperacao(); break;
+		   case '3': break;
 
-		   case 4: printf(" ... | Bye bye |... "); break;
+		   case '4': printf("Saindo... "); break;
 
-		   default: printf(" Opção invalida digite "); break;
+		   default: printf(" Opção invalida... "); break;
 		}
 
 	}while(opcao != 4);
-
 }
 
-void cadastrarConta(){
-	int codigo;
-	char descricao;
+void CadastrarConta(){
+    int codigo;
+    char descricao[100];
 
-	printf(" Digite codigo da conta ");
-	scanf(" %d ", &codigo);
+    printf("\n Digite o codigo: ");
+    scanf("%d", &codigo);
+    printf("\n Descricao: ");
+    scanf("%s", descricao);
 
-	printf(" Digite descricao da conta ");
-	scanf(" %d ", &descricao);
+    conta.codigo[cadastrarcontasG] = codigo;
+    strcpy(conta.descricao[cadastrarcontasG], descricao);
 
-	conta[contascadastradas].codigo = codigo;
-	conta[contascadastradas].descricao = descricao;
-
-	contascadastradas++;
+    cadastrarcontasG++;
 }
