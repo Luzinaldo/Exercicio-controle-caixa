@@ -107,6 +107,7 @@ void Operacao(){
 
         case 'D': FuncMovimentacaoDeb(); break;
         case 'C': FuncMovimentacaoCred(); break;
+        default: printf("Opção invlida... "); break;
     }
 }
 
