@@ -52,7 +52,6 @@ int main(){
                 case 4: printf("\n Saindo..."); break;
                 default: printf("\nOpçao inválida !! "); break;
             }
-
         }while(opcao < 4);
     return 0;
 }
@@ -83,8 +82,8 @@ void AcessarConta(){
 
     for(LINHA = 0; LINHA < pos; LINHA++){
         if(codigo == conta[LINHA].codigo){
-            //Chamar FUNÇÃO HISTORICO OU MOVIMENTAÇÃO
-            printf("\n\n JUVENAS");
+         //Saldo...
+         //Movimentações do dia...
         }
     }
 }
@@ -99,7 +98,14 @@ void Operacao(){
 
     switch(operacao){
 
-        case '1': printf("FINALIZAR !!!!"); break;
-
+        case 'D':
+            //MOVIMENTAÇÃO CONTAS A PAGAR...
+        break;
     }
+}
+
+void FuncMovimentacao (){
+
+
+
 }
