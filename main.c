@@ -66,7 +66,7 @@ int main(){
 }
 
 void cadastrarConta(){
-	int codigo;
+	int codigo , opcao;
 	char descricao;
 
 	printf(" Digite codigo da conta ");
@@ -79,4 +79,19 @@ void cadastrarConta(){
 	conta[contascadastradas].descricao = descricao;
 
 	contascadastradas++;
+	printf(" Deseja entrar na conta cadastrada ? 1 - Sim , 2 - Não");
+	do{
+		switch (opcao)
+		{
+		 case 1:
+		   escolherOperacao();
+		   break;
+		 case 2:
+		   main();
+		   break;
+		 default:
+		   printf(" Opção invalida ");
+		   break;
+		}
+	}while(opcao != 2)
 }
