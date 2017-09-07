@@ -28,18 +28,23 @@ typedef struct{
 
     int contascadastradasG = 0;
 
+void CadastroConta();
 int main(){
-    int opcao;
+    char opcao;
     setlocale(LC_ALL, "Portuguese");
 
         do{
             printf("\n\t -------------------------- Gerenciamento de Contas --------------------------\n");
             printf("\n\t1 - Cadastro: ");
-
-
             printf("\n\t4 - Sair");
             printf("\n\t\t Escolha uma opção: ");
-            scanf("%d", &opcao);
+            scanf("%c", &opcao);
+            setbuf(stdin, NULL);
+
+            switch(opcao){
+
+                case '1': CadastroConta(); break;
+            }
 
         }while(opcao =! 4);
     return 0;
@@ -47,18 +52,17 @@ int main(){
 
 void CadastroConta(){
     int codigo;
-    char descricao;
+    char descricao[100];
 
-    printf(" Digite codigo da conta ");
-	scanf(" %d ", &codigo);
+    printf("\n Digite o codigo da conta: ");
+	scanf("%d", &codigo);
 	setbuf(stdin, NULL);
 
-	printf(" Digite descricao da conta ");
-	scanf(" %s ", &descricao);
+	printf("\n Digite a descricao da conta: ");
+	scanf("%s", &descricao);
 	setbuf(stdin, NULL);
 
 	conta[contascadastradasG].codigo = codigo;
 	strcpy(conta[contascadastradasG].descricao, descricao);
-
-	contascadastradasG++;
+	contascadastradasG++; //Incremento de quantas contas serão cadastradas
 }
