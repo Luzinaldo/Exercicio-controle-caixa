@@ -73,8 +73,8 @@ void CadastroConta(){
 	scanf("%s", &descricao);
 	setbuf(stdin, NULL);
 
-	conta[contascadastradasG].codigo = codigo;
-	strcpy(conta[contascadastradasG].descricao, descricao);
+	movimentacao[contascadastradasG].conta.codigo = codigo;
+	strcpy(movimentacao[contascadastradasG].conta.descricao, descricao);
 	contascadastradasG++; //Incremento de quantas contas serão cadastradas
 }
 
@@ -88,8 +88,8 @@ void AcessarConta(){
     for(LINHA = 0; LINHA < pos; LINHA++){
         if(codigo == conta[LINHA].codigo){
                 printf("\n\t>>>>>> Dados Da conta <<<<<< \n");
-         printf("\nConta: %d", conta[LINHA].codigo);
-         printf("\nDescrição: %s", conta[LINHA].descricao);
+         printf("\nConta: %d", movimentacao[LINHA].conta.codigo);
+         printf("\nDescrição: %s", movimentacao[LINHA].conta.descricao);
          printf("\nSaldo: %0.2f", movimentacao[LINHA].valor);
         }
     }
@@ -107,7 +107,6 @@ void Operacao(){
 
         case 'D': FuncMovimentacaoDeb(); break;
         case 'C': FuncMovimentacaoCred(); break;
-        default: printf("Opção invlida... "); break;
     }
 }
 
@@ -130,19 +129,28 @@ void FuncMovimentacaoDeb(){
 }
 
 void FuncMovimentacaoCred(){
-    int data;
+    int data, codigo, LINHA, pos = contascadastradasG;
     float valor;
     char descricao[100];
 
-    /*printf("\nDia: ");
-    scanf("%d", &data);*/
-    printf("Valor: ");
-    scanf("%f", &valor);
-    printf("O que foi feito: ");
-    scanf("%s", &descricao);
+        printf("\n\tInforme o codigo da conta: ");
+        scanf("%d", &codigo);
 
-    movimentacao[contmovCred].valor = movimentacao[contmovCred].valor + valor;
-    strcpy(movimentacao[contmovCred].complemento, descricao);
+    for(LINHA = 0; LINHA < pos; LINHA++){
+        if(codigo == movimentacao[LINHA].conta.codigo){
+            /*printf("\nDia: ");
+            scanf("%d", &data);*/
+            printf("Valor: ");
+            scanf("%f", &valor);
+            printf("O que foi feito: ");
+            scanf("%s", &descricao);
+
+            movimentacao[LINHA].valor = movimentacao[LINHA].valor + valor;
+            strcpy(movimentacao[LINHA].complemento, descricao);
+        }
+    }
+
+
 
     contmovCred++;
 }
