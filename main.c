@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #define TAMCONTA 100
 
@@ -16,30 +17,36 @@ typedef struct{
 
 typedef struct{
 	int dia, mes, ano;
-	Conta conta[1];
-	Historico historico[1];
+	Conta conta;
+	Historico historico;
 	float valor;
 	char complemento[100];
-};
+} Movimentacao;
 
+void listarContas();
 void cadastrarConta();
 void escolherOperacao();
 void efetuarOperacao();
 
 Conta conta[TAMCONTA];
 int contascadastradas = 0;
-int contacorrente = 0;
+int contaatual = 0;
 
 int main(){
 
 	int opcao;
-	printf(" Bem vindo !! ");
+	printf(" Bem vindo !!  \n \n");
 
 	do{
-		printf(" 1 - Cadastrar conta ");
-		printf(" 2 - Escolher conta ");
-		printf(" 3 - Efetuar operação ");
-		printf(" 4 - Sair ");
+		printf(" 1 - Cadastrar conta \n");
+		printf(" 2 - Escolher conta \n");
+		printf(" 3 - Efetuar operação \n");
+		if(contaatual =! 0){
+			printf(" 4 - Sair da conta \n");
+		}else{
+			printf(" 4 - Sair do Sistema ");
+		}
+
 		scanf(" %d ", &opcao);
 
 		switch (opcao)
@@ -48,10 +55,10 @@ int main(){
 			 cadastrarConta();
 			 break;
 		   case 2:
-			 escolherOperacao();
+			 //escolherOperacao();
 			 break;
 		   case 3:
-		     efetuarOperacao();
+		     //efetuarOperacao();
 		     break;
 		   case 4:
 			 printf(" ... | Bye bye |... ");
@@ -71,20 +78,25 @@ void cadastrarConta(){
 
 	printf(" Digite codigo da conta ");
 	scanf(" %d ", &codigo);
+	setbuf(stdin, NULL);
 
 	printf(" Digite descricao da conta ");
-	scanf(" %d ", &descricao);
+	scanf(" %s ", &descricao);
+	setbuf(stdin, NULL);
 
 	conta[contascadastradas].codigo = codigo;
-	conta[contascadastradas].descricao = descricao;
+	printf(" %s",descricao);
+//	conta[contascadastradas].descricao = descricao;
 
 	contascadastradas++;
 	printf(" Deseja entrar na conta cadastrada ? 1 - Sim , 2 - Não");
+
 	do{
 		switch (opcao)
 		{
+
 		 case 1:
-		   escolherOperacao();
+		   //escolherOperacao();
 		   break;
 		 case 2:
 		   main();
@@ -93,5 +105,16 @@ void cadastrarConta(){
 		   printf(" Opção invalida ");
 		   break;
 		}
-	}while(opcao != 2)
+	}while(opcao != 2);
+}
+
+void listarContas(){
+	if(contascadastradas > 0){
+		for(int i = 0; i < contascadastradas; i++){
+
+		}
+	}else{
+		printf(" Não possui nenhuma conta cadastrada ");
+	}
+
 }
