@@ -99,7 +99,7 @@ void Operacao(){
 
     switch(operacao){
 
-        case '1':
+        case '1': printf("FINALIZAR !!!!"); break;
 
     }
 }
