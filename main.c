@@ -32,6 +32,7 @@ typedef struct{
 void CadastroConta();
 void AcessarConta();
 void Operacao();
+FuncMovimentacaoCred();
 void FuncMovimentacaoDeb();
 int main(){
     int opcao;
@@ -101,9 +102,8 @@ void Operacao(){
 
     switch(operacao){
 
-        case 'D':
-            FuncMovimentacaoDeb();
-        break;
+        case 'D': FuncMovimentacaoDeb(); break;
+        case 'C': FuncMovimentacaoCred(); break;
     }
 }
 
@@ -120,6 +120,24 @@ void FuncMovimentacaoDeb(){
     scanf("%s", &descricao);
 
     movimentacao[contmovDeb].valor = movimentacao[contmovDeb].valor - valor;
+    strcpy(movimentacao[contmovDeb].complemento, descricao);
+
+    contmovDeb++;
+}
+
+void FuncMovimentacaoCred(){
+    int data;
+    float valor;
+    char descricao[100];
+
+    /*printf("\nDia: ");
+    scanf("%d", &data);*/
+    printf("Valor: ");
+    scanf("%f", &valor);
+    printf("O que foi feito: ");
+    scanf("%s", &descricao);
+
+    movimentacao[contmovDeb].valor = movimentacao[contmovDeb].valor + valor;
     strcpy(movimentacao[contmovDeb].complemento, descricao);
 
     contmovDeb++;
