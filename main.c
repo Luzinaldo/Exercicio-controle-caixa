@@ -27,13 +27,14 @@ typedef struct{
 }Movimentacao;
     Movimentacao movimentacao[TAMCONTA];
 
-    int contascadastradasG = 0, contmovDeb = 0;
+    int contascadastradasG = 0, contmovDeb = 0, contmovCred = 0;
 
 void CadastroConta();
 void AcessarConta();
 void Operacao();
-FuncMovimentacaoCred();
+void FuncMovimentacaoCred();
 void FuncMovimentacaoDeb();
+
 int main(){
     int opcao;
     setlocale(LC_ALL, "Portuguese");
@@ -56,7 +57,7 @@ int main(){
                 case 4: printf("\n Saindo..."); break;
                 default: printf("\nOpçao inválida !! "); break;
             }
-        }while(opcao < 4);
+        }while(opcao != 4);
     return 0;
 }
 
@@ -86,8 +87,10 @@ void AcessarConta(){
 
     for(LINHA = 0; LINHA < pos; LINHA++){
         if(codigo == conta[LINHA].codigo){
-         //Saldo...
-         //Movimentações do dia...
+                printf("\n\t>>>>>> Dados Da conta <<<<<< \n");
+         printf("\nConta: %d", conta[LINHA].codigo);
+         printf("\nDescrição: %s", conta[LINHA].descricao);
+         printf("\nSaldo: %0.2f", movimentacao[LINHA].valor);
         }
     }
 }
@@ -137,8 +140,8 @@ void FuncMovimentacaoCred(){
     printf("O que foi feito: ");
     scanf("%s", &descricao);
 
-    movimentacao[contmovDeb].valor = movimentacao[contmovDeb].valor + valor;
-    strcpy(movimentacao[contmovDeb].complemento, descricao);
+    movimentacao[contmovCred].valor = movimentacao[contmovCred].valor + valor;
+    strcpy(movimentacao[contmovCred].complemento, descricao);
 
-    contmovDeb++;
+    contmovCred++;
 }
