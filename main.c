@@ -34,6 +34,7 @@ void AcessarConta();
 void Operacao();
 void FuncMovimentacaoCred();
 void FuncMovimentacaoDeb();
+void ListarMovContaEspecif();
 
 int main(){
     int opcao;
@@ -55,7 +56,8 @@ int main(){
                 case 1: CadastroConta(); break;
                 case 2: AcessarConta(); break;
                 case 3: Operacao(); break;
-                case 4: printf("\n Saindo..."); break;
+                case 4: ListarMovContaEspecif(); break;
+                case 5: printf("\n Saindo..."); break;
                 default: printf("\nOpçao inválida !! "); break;
             }
         }while(opcao != 5);
