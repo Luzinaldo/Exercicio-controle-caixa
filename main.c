@@ -44,7 +44,8 @@ int main(){
             printf("\n\t1 - Cadastro: ");
             printf("\n\t2 - Acessar Conta: ");
             printf("\n\t3 - Efetuar Operação");
-            printf("\n\t4 - Sair");
+            printf("\n\t4 - Listar Movimentações Credito");
+            printf("\n\t5 - Sair");
             printf("\n\t\t Escolha uma opção: ");
             scanf("%d", &opcao);
             setbuf(stdin, NULL);
@@ -57,7 +58,7 @@ int main(){
                 case 4: printf("\n Saindo..."); break;
                 default: printf("\nOpçao inválida !! "); break;
             }
-        }while(opcao != 4);
+        }while(opcao != 5);
     return 0;
 }
 
@@ -99,6 +100,7 @@ void AcessarConta(){
 }
 
 void Operacao(){
+    setlocale(LC_ALL, "Portuguese");
     char operacao;
 
     printf("Tipo de operação: ");
@@ -110,6 +112,7 @@ void Operacao(){
 
         case 'D': FuncMovimentacaoDeb(); break;
         case 'C': FuncMovimentacaoCred(); break;
+        default: printf("TIPO DE OPERAÇÃO INVÁLIDA ");
     }
 }
 
@@ -159,4 +162,20 @@ void FuncMovimentacaoCred(){
         }
     }
     contmovCred++;
+}
+
+void ListarMovContaEspecif(){
+    int codigo, LINHA;
+
+    printf("Digite o codigo da conta: ");
+    scanf("%d", &codigo);
+
+    for(LINHA = 0; LINHA < contascadastradasG; LINHA++){
+        if(codigo == conta[LINHA].codigo){
+            printf("\n\t Movimentações da conta %d >> ", conta[LINHA].codigo);
+            printf("\n\\t Descrição: %s", movimentacao[LINHA].complemento);
+            printf("\n\t  Valor da movimentação: %f", movimentacao[LINHA].valor);
+        }
+
+    }
 }
