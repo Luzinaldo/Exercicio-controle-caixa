@@ -65,11 +65,11 @@ void CadastroConta(){
     int codigo;
     char descricao[100];
 
-    printf("\n Digite o codigo da conta: ");
+    printf("\nDigite o codigo da conta: ");
 	scanf("%d", &codigo);
 	setbuf(stdin, NULL);
 
-	printf("\n Digite a descricao da conta: ");
+	printf("Digite a descricao da conta: ");
 	scanf("%s", &descricao);
 	setbuf(stdin, NULL);
 
@@ -87,10 +87,13 @@ void AcessarConta(){
 
     for(LINHA = 0; LINHA < pos; LINHA++){
         if(codigo == conta[LINHA].codigo){
-                printf("\n\t>>>>>> Dados Da conta <<<<<< \n");
-         printf("\nConta: %d", conta[contascadastradasG].codigo);
-         printf("\nDescrição: %s", conta[contascadastradasG].descricao);
+            printf("\n\t>>>>>> Dados Da conta <<<<<< \n");
+         printf("\nConta: %d", conta[LINHA].codigo);
+         printf("\nDescrição: %s", conta[LINHA].descricao);
          printf("\nSaldo: %0.2f", movimentacao[LINHA].valor);
+        }else{
+            printf("\n\t>> Esse codigo não existe <<");
+            printf("---------------------------------");
         }
     }
 }
@@ -111,33 +114,14 @@ void Operacao(){
 }
 
 void FuncMovimentacaoDeb(){
-    int data;
+    int data, codigo, LINHA, pos;
     float valor;
     char descricao[100];
 
-    /*printf("\nDia: ");
-    scanf("%d", &data);*/
-    printf("Valor: ");
-    scanf("%f", &valor);
-    printf("O que foi feito: ");
-    scanf("%s", &descricao);
-
-    movimentacao[contmovDeb].valor = movimentacao[contmovDeb].valor - valor;
-    strcpy(movimentacao[contmovDeb].complemento, descricao);
-
-    contmovDeb++;
-}
-
-void FuncMovimentacaoCred(){
-    int data, codigo, LINHA, pos = contascadastradasG;
-    float valor;
-    char descricao[100];
-
-        printf("\n\tInforme o codigo da conta: ");
+        printf("\n\t Informe o codigo da conta: ");
         scanf("%d", &codigo);
-
-    for(LINHA = 0; LINHA < pos; LINHA++){
-        if(codigo == movimentacao[LINHA].conta.codigo){
+    for(LINHA = 0; LINHA < contascadastradasG; LINHA++){
+        if(codigo == conta[LINHA].codigo){
             /*printf("\nDia: ");
             scanf("%d", &data);*/
             printf("Valor: ");
@@ -145,12 +129,34 @@ void FuncMovimentacaoCred(){
             printf("O que foi feito: ");
             scanf("%s", &descricao);
 
-            movimentacao[LINHA].valor = movimentacao[LINHA].valor + valor;
-            strcpy(movimentacao[LINHA].complemento, descricao);
+            movimentacao[contmovDeb].valor = movimentacao[contmovDeb].valor - valor;
+            strcpy(movimentacao[contmovDeb].complemento, descricao);
         }
     }
 
+    contmovDeb++;
+}
 
+void FuncMovimentacaoCred(){
+    int /*data*/codigo, LINHA, pos;
+    float valor;
+    char descricao[100];
 
+        printf("\n\t Informe o codigo da conta: ");
+        scanf("%d", &codigo);
+    for(LINHA = 0; LINHA < contascadastradasG; LINHA++){
+        if(codigo == conta[LINHA].codigo){
+            pos = LINHA;
+            /*printf("\nDia: ");
+            scanf("%d", &data);*/
+            printf("Valor: ");
+            scanf("%f", &valor);
+            printf("O que foi feito: ");
+            scanf("%s", &descricao);
+
+            movimentacao[pos].valor = movimentacao[pos].valor + valor;
+            strcpy(movimentacao[pos].complemento, descricao);
+        }
+    }
     contmovCred++;
 }
