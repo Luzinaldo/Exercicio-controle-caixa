@@ -73,8 +73,8 @@ void CadastroConta(){
 	scanf("%s", &descricao);
 	setbuf(stdin, NULL);
 
-	movimentacao[contascadastradasG].conta.codigo = codigo;
-	strcpy(movimentacao[contascadastradasG].conta.descricao, descricao);
+	conta[contascadastradasG].codigo = codigo;
+	strcpy(conta[contascadastradasG].descricao, descricao);
 	contascadastradasG++; //Incremento de quantas contas serão cadastradas
 }
 
@@ -88,8 +88,8 @@ void AcessarConta(){
     for(LINHA = 0; LINHA < pos; LINHA++){
         if(codigo == conta[LINHA].codigo){
                 printf("\n\t>>>>>> Dados Da conta <<<<<< \n");
-         printf("\nConta: %d", movimentacao[LINHA].conta.codigo);
-         printf("\nDescrição: %s", movimentacao[LINHA].conta.descricao);
+         printf("\nConta: %d", conta[contascadastradasG].codigo);
+         printf("\nDescrição: %s", conta[contascadastradasG].descricao);
          printf("\nSaldo: %0.2f", movimentacao[LINHA].valor);
         }
     }
