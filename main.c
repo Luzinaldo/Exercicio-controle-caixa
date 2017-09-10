@@ -36,11 +36,13 @@ void FuncMovimentacaoCred();
 void FuncMovimentacaoDeb();
 void ListarMovContaEspecif();
 int _buscarConta(int codigo);
-void listarMovPorConta(int codigo);
+void listarMovPorConta();
 
 int main(){
     int opcao;
     setlocale(LC_ALL, "Portuguese");
+
+    	listarMovPorConta();
 
         do{
             printf("\n\t -------------- Fluxo de Caixa --------------\n");
@@ -58,7 +60,7 @@ int main(){
                 case 1: CadastroConta(); break;
                 case 2: AcessarConta(); break;
                 case 3: Operacao(); break;
-                case 4: ListarMovContaEspecif(); break;
+                case 4: listarMovPorConta(); break;
                 case 5: printf("\n Saindo..."); break;
                 default: printf("\nOpçao inválida !! "); break;
             }
@@ -201,7 +203,7 @@ void listarMovPorConta(){
 	Conta contaFiltro = conta[_buscarConta(codigo)];
 
 	for(int j = 0; j < (contmovDeb + contmovCred); j++){
-		if(movimentacao[j].conta == contaFiltro){
+		if(movimentacao[j].conta.codigo == contaFiltro.codigo){
 			printf("\n\t\t Listagem de Movimentação da sua conta ");
 			printf("\n\t Movimentações %d -- Conta: %d -- Descrição da conta: %s ", j+1, movimentacao[j].conta.codigo, movimentacao[j].conta.descricao);
 			printf("\n\t Descrição: %s", movimentacao[j].complemento);
@@ -222,5 +224,3 @@ int _buscarConta(int codigo){
 	/* tratamento de erro ... */
 	return 0;
 }
-
-
