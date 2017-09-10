@@ -36,11 +36,13 @@ void FuncMovimentacaoCred();
 void FuncMovimentacaoDeb();
 void ListarMovContaEspecif();
 int _buscarConta(int codigo);
-void listarMovPorConta(int codigo);
+void listarMovPorConta();
 
 int main(){
     int opcao;
     setlocale(LC_ALL, "Portuguese");
+
+    	listarMovPorConta();
 
         do{
             printf("\n\t -------------- Fluxo de Caixa --------------\n");
