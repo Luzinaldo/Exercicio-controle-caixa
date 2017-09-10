@@ -14,7 +14,7 @@ typedef struct{
 typedef struct{
     int codigo;
     char descricao[100];
-    int tipo; //Credito ou Debito
+    char tipo; //Credito ou Debito
 }Historico;
     Historico historico[TAMCONTA];
 
@@ -27,7 +27,7 @@ typedef struct{
 }Movimentacao;
     Movimentacao movimentacao[TAMCONTA];
 
-    int contascadastradasG = 0, contmovDeb = 0, contmovCred = 0;
+    int contascadastradasG = 0, contmovDeb = 0, contmovCred = 0, cont_operacao = 0;
 
 void CadastroConta();
 void AcessarConta();
@@ -45,7 +45,7 @@ int main(){
             printf("\n\t1 - Cadastro: ");
             printf("\n\t2 - Acessar Conta: ");
             printf("\n\t3 - Efetuar Operação");
-            printf("\n\t4 - Listar Movimentações Credito");
+            printf("\n\t4 - Listar Movimentações");
             printf("\n\t5 - Sair");
             printf("\n\t\t Escolha uma opção: ");
             scanf("%d", &opcao);
@@ -94,9 +94,11 @@ void AcessarConta(){
          printf("\nConta: %d", conta[LINHA].codigo);
          printf("\nDescrição: %s", conta[LINHA].descricao);
          printf("\nSaldo: %0.2f", movimentacao[LINHA].valor);
-        }else{
-            printf("\n\t>> Esse codigo não existe <<");
-            printf("---------------------------------");
+         break;
+        }else if(codigo != conta[LINHA].codigo){
+            printf("\n\t>>    Essa conta não existe    <<\n");
+            printf("\t---------------------------------\n");
+            break;
         }
     }
 }
@@ -109,12 +111,14 @@ void Operacao(){
     printf("D - Débito || C - Credito: ");
     scanf("%c", &operacao);
 
+    historico[cont_operacao].tipo = operacao;
 
-    switch(operacao){
+    switch(historico[cont_operacao].tipo){
 
         case 'D': FuncMovimentacaoDeb(); break;
         case 'C': FuncMovimentacaoCred(); break;
         default: printf("TIPO DE OPERAÇÃO INVÁLIDA ");
+    cont_operacao++;
     }
 }
 
@@ -134,8 +138,8 @@ void FuncMovimentacaoDeb(){
             printf("O que foi feito: ");
             scanf("%s", &descricao);
 
-            movimentacao[contmovDeb].valor = movimentacao[contmovDeb].valor - valor;
-            strcpy(movimentacao[contmovDeb].complemento, descricao);
+            movimentacao[LINHA].valor = movimentacao[LINHA].valor - valor;
+            strcpy(movimentacao[LINHA].complemento, descricao);
         }
     }
 
@@ -143,7 +147,7 @@ void FuncMovimentacaoDeb(){
 }
 
 void FuncMovimentacaoCred(){
-    int /*data*/codigo, LINHA, pos;
+    int /*data*/codigo, LINHA;
     float valor;
     char descricao[100];
 
@@ -151,7 +155,7 @@ void FuncMovimentacaoCred(){
         scanf("%d", &codigo);
     for(LINHA = 0; LINHA < contascadastradasG; LINHA++){
         if(codigo == conta[LINHA].codigo){
-            pos = LINHA;
+
             /*printf("\nDia: ");
             scanf("%d", &data);*/
             printf("Valor: ");
@@ -159,25 +163,29 @@ void FuncMovimentacaoCred(){
             printf("O que foi feito: ");
             scanf("%s", &descricao);
 
-            movimentacao[pos].valor = movimentacao[pos].valor + valor;
-            strcpy(movimentacao[pos].complemento, descricao);
+            movimentacao[LINHA].valor = movimentacao[LINHA].valor + valor;
+            strcpy(movimentacao[LINHA].complemento, descricao);
         }
     }
     contmovCred++;
 }
 
 void ListarMovContaEspecif(){
-    int codigo, LINHA;
+    int codigo, LINHA, pos = contmovCred + contmovDeb;
 
     printf("Digite o codigo da conta: ");
     scanf("%d", &codigo);
 
-    for(LINHA = 0; LINHA < contascadastradasG; LINHA++){
-        if(codigo == conta[LINHA].codigo){
-            printf("\n\t Movimentações da conta %d >> ", conta[LINHA].codigo);
-            printf("\n\\t Descrição: %s", movimentacao[LINHA].complemento);
-            printf("\n\t  Valor da movimentação: %f", movimentacao[LINHA].valor);
-        }
+    printf("\n\n POS: %d", pos);
 
+    for(LINHA = 0; LINHA < pos; LINHA++){
+        if(codigo == conta[LINHA].codigo){
+                                    printf("\n\t\t Listagem de Movimentação da sua conta ");
+            printf("\n\t Movimentações %d -- Conta: %d -- Descrição da conta: %s ", LINHA+1, conta[LINHA].codigo, conta[LINHA].descricao);
+            printf("\n\t Descrição: %s", movimentacao[LINHA].complemento);
+            printf("\n\t Tipo da Movimentação: %c", historico[LINHA].tipo);
+            printf("\n\t Valor da movimentação: %0.2f", movimentacao[LINHA].valor);
+            printf("\n\n");
+        }
     }
 }
