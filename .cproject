@@ -89,15 +89,7 @@
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="controle-caixa.cdt.managedbuild.target.gnu.mingw.exe.1531131422" name="Executable" projectType="cdt.managedbuild.target.gnu.mingw.exe"/>
 	</storageModule>
-	<storageModule moduleId="scannerConfiguration">
-		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.mingw.exe.release.470174358;cdt.managedbuild.config.gnu.mingw.exe.release.470174358.;cdt.managedbuild.tool.gnu.c.compiler.mingw.exe.release.2033909844;cdt.managedbuild.tool.gnu.c.compiler.input.1720262297">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.mingw.exe.debug.1698364263;cdt.managedbuild.config.gnu.mingw.exe.debug.1698364263.;cdt.managedbuild.tool.gnu.c.compiler.mingw.exe.debug.1183736658;cdt.managedbuild.tool.gnu.c.compiler.input.1506919790">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
+	<storageModule moduleId="scannerConfiguration"/>
 </cproject>

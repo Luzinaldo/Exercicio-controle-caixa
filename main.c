@@ -35,6 +35,8 @@ void Operacao();
 void FuncMovimentacaoCred();
 void FuncMovimentacaoDeb();
 void ListarMovContaEspecif();
+int _buscarConta(int codigo);
+void listarMovPorConta(int codigo);
 
 int main(){
     int opcao;
@@ -189,3 +191,36 @@ void ListarMovContaEspecif(){
         }
     }
 }
+
+void listarMovPorConta(){
+	 int codigo;
+
+	 printf("Digite o codigo da conta: ");
+	 scanf("%d", &codigo);
+
+	Conta contaFiltro = conta[_buscarConta(codigo)];
+
+	for(int j = 0; j < (contmovDeb + contmovCred); j++){
+		if(movimentacao[j].conta == contaFiltro){
+			printf("\n\t\t Listagem de Movimentação da sua conta ");
+			printf("\n\t Movimentações %d -- Conta: %d -- Descrição da conta: %s ", j+1, movimentacao[j].conta.codigo, movimentacao[j].conta.descricao);
+			printf("\n\t Descrição: %s", movimentacao[j].complemento);
+			printf("\n\t Tipo da Movimentação: %c", movimentacao[j].historico.tipo);
+			printf("\n\t Valor da movimentação: %0.2f", movimentacao[j].valor);
+			printf("\n\n");
+		}
+	}
+
+}
+
+int _buscarConta(int codigo){
+	for(int j = 0; j < contascadastradasG ; j++){
+		if(conta[j].codigo == codigo){
+			return j;
+		}
+	}
+	/* tratamento de erro ... */
+	return 0;
+}
+
+
