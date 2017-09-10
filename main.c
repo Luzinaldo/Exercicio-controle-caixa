@@ -42,7 +42,7 @@ int main(){
     int opcao;
     setlocale(LC_ALL, "Portuguese");
 
-    	listarMovPorConta();
+    	//listarMovPorConta();
 
         do{
             printf("\n\t -------------- Fluxo de Caixa --------------\n");
