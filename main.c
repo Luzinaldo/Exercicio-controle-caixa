@@ -12,7 +12,7 @@ typedef struct{
     Conta conta[TAMCONTA];
 
 typedef struct{
-    int codigo;
+    int  codigo;
     char descricao[100];
     char tipo; //Credito ou Debito
 }Historico;
@@ -27,7 +27,7 @@ typedef struct{
 }Movimentacao;
     Movimentacao movimentacao[TAMCONTA];
 
-    int contascadastradasG = 0, contmovDeb = 0, contmovCred = 0, cont_operacao = 0;
+    int contascadastradasG = 0, contMov = 0, cont_operacao = 0;
 
 void CadastroConta();
 void AcessarConta();
@@ -36,7 +36,8 @@ void FuncMovimentacaoCred();
 void FuncMovimentacaoDeb();
 void ListarMovContaEspecif();
 int _buscarConta(int codigo);
-void listarMovPorConta();
+//void listarMovPorConta();
+//int ExisteCodigo(int codigo, Conta *conta);
 
 int main(){
     int opcao;
@@ -60,7 +61,7 @@ int main(){
                 case 1: CadastroConta(); break;
                 case 2: AcessarConta(); break;
                 case 3: Operacao(); break;
-                case 4: listarMovPorConta(); break;
+                case 4: ListarMovContaEspecif(); break;
                 case 5: printf("\n Saindo..."); break;
                 default: printf("\nOpçao inválida !! "); break;
             }
@@ -72,9 +73,17 @@ void CadastroConta(){
     int codigo;
     char descricao[100];
 
+    do{
     printf("\nDigite o codigo da conta: ");
 	scanf("%d", &codigo);
 	setbuf(stdin, NULL);
+
+        if(_buscarConta(codigo) == 1){
+            printf("\t >> Codigo já existe << ");
+        }
+
+	}while(_buscarConta(codigo) == 1);
+
 
 	printf("Digite a descricao da conta: ");
 	scanf("%s", &descricao);
@@ -121,37 +130,47 @@ void Operacao(){
 
         case 'D': FuncMovimentacaoDeb(); break;
         case 'C': FuncMovimentacaoCred(); break;
-        default: printf("TIPO DE OPERAÇÃO INVÁLIDA ");
-    cont_operacao++;
+        default: printf("TIPO DE OPERAÇÃO INVÁLIDA "); break;
     }
+    cont_operacao++;
 }
 
 void FuncMovimentacaoDeb(){
-    int data, codigo, LINHA, pos;
+    int data, codigo, LINHA, pos, ACHOU = 0, ACHOU2 = 0;
     float valor;
     char descricao[100];
 
         printf("\n\t Informe o codigo da conta: ");
         scanf("%d", &codigo);
+
     for(LINHA = 0; LINHA < contascadastradasG; LINHA++){
         if(codigo == conta[LINHA].codigo){
-            /*printf("\nDia: ");
-            scanf("%d", &data);*/
-            printf("Valor: ");
-            scanf("%f", &valor);
-            printf("O que foi feito: ");
-            scanf("%s", &descricao);
-
-            movimentacao[LINHA].valor = movimentacao[LINHA].valor - valor;
-            strcpy(movimentacao[LINHA].complemento, descricao);
+            ACHOU = 1;
+            ACHOU2 = LINHA;
         }
     }
 
-    contmovDeb++;
+    if(ACHOU == 1){
+        /*printf("\nDia: ");
+        scanf("%d", &data);*/
+        printf("Valor: ");
+        scanf("%f", &valor);
+        printf("O que foi feito: ");
+        scanf("%s", &descricao);
+
+        movimentacao[contMov].conta.codigo = conta[ACHOU2].codigo;
+        movimentacao[contMov].conta.descricao = conta[ACHOU2].descricao;
+        movimentacao[contMov].valor = movimentacao[contMov].valor - valor;
+        strcpy(movimentacao[contMov].complemento, descricao);
+
+    } else {
+        printf("\n\t Conta não existe << ");
+    }
+    contMov++;
 }
 
 void FuncMovimentacaoCred(){
-    int /*data*/codigo, LINHA;
+    int /*data*/codigo, LINHA, ACHOU = 0, ACHOU2 = 0;
     float valor;
     char descricao[100];
 
@@ -159,42 +178,49 @@ void FuncMovimentacaoCred(){
         scanf("%d", &codigo);
     for(LINHA = 0; LINHA < contascadastradasG; LINHA++){
         if(codigo == conta[LINHA].codigo){
-
-            /*printf("\nDia: ");
-            scanf("%d", &data);*/
-            printf("Valor: ");
-            scanf("%f", &valor);
-            printf("O que foi feito: ");
-            scanf("%s", &descricao);
-
-            movimentacao[LINHA].valor = movimentacao[LINHA].valor + valor;
-            strcpy(movimentacao[LINHA].complemento, descricao);
+            ACHOU = 1;
+            ACHOU2 = LINHA;
         }
     }
-    contmovCred++;
+
+    if(ACHOU == 1){
+        /*printf("\nDia: ");
+        scanf("%d", &data);*/
+        printf("Valor: ");
+        scanf("%f", &valor);
+        printf("O que foi feito: ");
+        scanf("%s", &descricao);
+
+        movimentacao[contMov].conta.codigo = conta[ACHOU2].codigo;
+        movimentacao[contMov].conta.descricao = conta[ACHOU2].descricao;
+        movimentacao[contMov].valor = movimentacao[contMov].valor + valor;
+        strcpy(movimentacao[contMov].complemento, descricao);
+    }else{
+        printf("\n\t Conta não existe << ");
+    }
+    contMov++;
+
 }
 
 void ListarMovContaEspecif(){
-    int codigo, LINHA, pos = contmovCred + contmovDeb;
+    int codigo, LINHA;
 
-    printf("Digite o codigo da conta: ");
-    scanf("%d", &codigo);
+    //printf("Digite o codigo da conta: ");
+    //scanf("%d", &codigo);
 
-    printf("\n\n POS: %d", pos);
-
-    for(LINHA = 0; LINHA < pos; LINHA++){
-        if(codigo == conta[LINHA].codigo){
-                                    printf("\n\t\t Listagem de Movimentação da sua conta ");
-            printf("\n\t Movimentações %d -- Conta: %d -- Descrição da conta: %s ", LINHA+1, conta[LINHA].codigo, conta[LINHA].descricao);
-            printf("\n\t Descrição: %s", movimentacao[LINHA].complemento);
-            printf("\n\t Tipo da Movimentação: %c", historico[LINHA].tipo);
-            printf("\n\t Valor da movimentação: %0.2f", movimentacao[LINHA].valor);
-            printf("\n\n");
-        }
+    for(LINHA = 0; LINHA < contMov; LINHA++){
+        //if(codigo == conta[LINHA].codigo){
+                    printf("\n\t\t Listagem de Movimentação da sua conta ");
+        printf("\n\t Movimentações %d -- Conta: %s", LINHA+1, movimentacao[LINHA].conta.descricao);
+        printf("\n\t Descrição: %s", movimentacao[LINHA].complemento);
+        printf("\n\t Tipo da Movimentação: %c", historico[LINHA].tipo);
+        printf("\n\t Valor da movimentação: %0.2f", movimentacao[LINHA].valor);
+        printf("\n\n");
+        //}
     }
 }
 
-void listarMovPorConta(){
+/*void listarMovPorConta(){
 	 int codigo;
 
 	 printf("Digite o codigo da conta: ");
@@ -212,15 +238,35 @@ void listarMovPorConta(){
 			printf("\n\n");
 		}
 	}
-
-}
+}*/
 
 int _buscarConta(int codigo){
+    int ACHOU = 0;
 	for(int j = 0; j < contascadastradasG ; j++){
 		if(conta[j].codigo == codigo){
-			return j;
+            ACHOU = 1;
 		}
 	}
 	/* tratamento de erro ... */
-	return 0;
+	return ACHOU;
 }
+
+/*int ExisteCodigo(int codigo, Conta *conta){
+    int LINHA, ACHOU = 0;
+
+    for (LINHA = 0; LINHA < contascadastradasG; LINHA++){
+        if(conta[LINHA].codigo == codigo){
+            ACHOU = 1;
+        }
+    }
+
+    return ACHOU;
+}*/
+
+/*void CadastroHistorico(){
+
+    printf("")
+
+
+
+}*/
