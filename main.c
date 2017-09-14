@@ -89,31 +89,38 @@ void CadastroConta(){
 	scanf("%s", &descricao);
 	setbuf(stdin, NULL);
 
-	conta[contascadastradasG].codigo = codigo;
-	strcpy(conta[contascadastradasG].descricao, descricao);
+	movimentacao[contascadastradasG].conta.codigo = codigo;
+	strcpy(movimentacao[contascadastradasG].conta.descricao, descricao);
 	contascadastradasG++; //Incremento de quantas contas serão cadastradas
 }
 
 void AcessarConta(){
 
-    int codigo, LINHA;
-    int pos = contascadastradasG;
+    int codigo, LINHA, ACHOU2, ACHOU = 0;
     printf("Digite o codigo da conta: ");
     scanf("%d", &codigo);
 
-    for(LINHA = 0; LINHA < pos; LINHA++){
-        if(codigo == conta[LINHA].codigo){
-            printf("\n\t>>>>>> Dados Da conta <<<<<< \n");
-         printf("\nConta: %d", conta[LINHA].codigo);
-         printf("\nDescrição: %s", conta[LINHA].descricao);
-         printf("\nSaldo: %0.2f", movimentacao[LINHA].valor);
+    for(LINHA = 0; LINHA < contascadastradasG; LINHA++){
+        if(_buscarConta(codigo) == 1){
+            ACHOU = 1;
+            ACHOU2 = LINHA;
+            printf("\n\t\t\t\t ACHOU 2: %d", ACHOU2);
          break;
-        }else if(codigo != conta[LINHA].codigo){
+        }else if(_buscarConta(codigo) == 0){
             printf("\n\t>>    Essa conta não existe    <<\n");
             printf("\t---------------------------------\n");
             break;
         }
     }
+
+    if(ACHOU == 1){
+        printf("\n\t>>>>>> Dados Da conta <<<<<< \n");
+        printf("\nConta: %d", movimentacao[ACHOU2].conta.codigo);
+        printf("\nDescrição: %s", movimentacao[ACHOU2].conta.descricao);
+        printf("\nSaldo: %0.2f", movimentacao[ACHOU2].valor);
+    }
+
+
 }
 
 void Operacao(){
@@ -136,7 +143,7 @@ void Operacao(){
 }
 
 void FuncMovimentacaoDeb(){
-    int data, codigo, LINHA, pos, ACHOU = 0, ACHOU2 = 0;
+    int data, codigo, LINHA, ACHOU = 0, ACHOU2 = 0;
     float valor;
     char descricao[100];
 
@@ -144,7 +151,7 @@ void FuncMovimentacaoDeb(){
         scanf("%d", &codigo);
 
     for(LINHA = 0; LINHA < contascadastradasG; LINHA++){
-        if(codigo == conta[LINHA].codigo){
+        if(codigo == movimentacao[LINHA].conta.codigo){
             ACHOU = 1;
             ACHOU2 = LINHA;
         }
@@ -158,9 +165,7 @@ void FuncMovimentacaoDeb(){
         printf("O que foi feito: ");
         scanf("%s", &descricao);
 
-        movimentacao[contMov].conta.codigo = conta[ACHOU2].codigo;
-        movimentacao[contMov].conta.descricao = conta[ACHOU2].descricao;
-        movimentacao[contMov].valor = movimentacao[contMov].valor - valor;
+        movimentacao[ACHOU2].valor = movimentacao[ACHOU2].valor - valor;
         strcpy(movimentacao[contMov].complemento, descricao);
 
     } else {
@@ -177,7 +182,7 @@ void FuncMovimentacaoCred(){
         printf("\n\t Informe o codigo da conta: ");
         scanf("%d", &codigo);
     for(LINHA = 0; LINHA < contascadastradasG; LINHA++){
-        if(codigo == conta[LINHA].codigo){
+        if(codigo == movimentacao[LINHA].conta.codigo){
             ACHOU = 1;
             ACHOU2 = LINHA;
         }
@@ -191,9 +196,7 @@ void FuncMovimentacaoCred(){
         printf("O que foi feito: ");
         scanf("%s", &descricao);
 
-        movimentacao[contMov].conta.codigo = conta[ACHOU2].codigo;
-        movimentacao[contMov].conta.descricao = conta[ACHOU2].descricao;
-        movimentacao[contMov].valor = movimentacao[contMov].valor + valor;
+        movimentacao[ACHOU2].valor = movimentacao[ACHOU2].valor + valor;
         strcpy(movimentacao[contMov].complemento, descricao);
     }else{
         printf("\n\t Conta não existe << ");
@@ -243,7 +246,7 @@ void ListarMovContaEspecif(){
 int _buscarConta(int codigo){
     int ACHOU = 0;
 	for(int j = 0; j < contascadastradasG ; j++){
-		if(conta[j].codigo == codigo){
+		if(movimentacao[j].conta.codigo == codigo){
             ACHOU = 1;
 		}
 	}
@@ -268,5 +271,10 @@ int _buscarConta(int codigo){
     printf("")
 
 
-
+typedef struct{
+    int  codigo;
+    char descricao[100];
+    char tipo; //Credito ou Debito
+}Historico;
+    Historico historico[TAMCONTA];
 }*/
