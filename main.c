@@ -32,14 +32,21 @@ typedef struct{
 void listarContas();
 void cadastrarConta();
 void auxEscolherConta(int numeroconta);
+Conta dadosConta(int numeroconta);
 void escolherConta();
+void exibirSaldo();
 
 /* funções historicos */
 void listarHistoricos();
 void cadastrarHistorico();
 int buscaHistorico(int codigo);
-void escolherOperacao();
 void efetuarOperacao();
+
+/* funções listar movimentação */
+void listarMovimentacoes();
+
+/* função auxiliar */
+void parseData(char data[11], int *dia , int *mes , int *ano);
 
 /* testes */
 void testInsertDadosConta();
@@ -57,30 +64,31 @@ int movimentacaocadastradas = 0;
 
 
 int main(){
-
 	int opcao;
 	setlocale(LC_ALL, "portuguese");
 
-	if(contaAtual != 0){
-		printf(" Menu Principal !! , %s \n \n", conta[contaAtual].descricao);
-	}else{
-		printf(" Menu Principal !! \n \n");
-	}
+
+	printf(" Menu Principal !! \n \n");
 
 	testInsertDadosConta();
 	testInsertDadosHistorico();
 	//listarContas();
 
 	do{
+		if(contaAtual != 0){
+			printf(" %s \n" , dadosConta(contaAtual).descricao);
+		}
 		printf(" 1 - Cadastrar conta \n");
 		printf(" 2 - Escolher conta \n");
 		printf(" 3 - Lista de historico \n");
-		printf(" 4 - Cadastrar historico \n");
-		printf(" 5 - Efetuar operação \n");
-		printf(" 6 - Sair do Sistema \n");
+		printf(" 4 - Cadastrar historico \n \n");
 		if(contaAtual != 0){
-			printf(" 7 - Sair da conta \n");
+			printf(" 5 - Efetuar operação \n");
+			printf(" 6 - Listar minhas movimentações \n");
+			printf(" 7 - Meu saldo \n");
+			printf(" 8 - Sair da conta \n \n");
 		}
+		printf(" 9 - Sair do Sistema \n");
 
 
 		scanf("%d", &opcao);
@@ -104,17 +112,24 @@ int main(){
 		     efetuarOperacao();
 		     break;
 		   case 6:
-			 printf("\n \n ... | Bye bye |... \n \n");
+			 listarMovimentacoes();
 			 break;
 		   case 7:
+			 exibirSaldo();
+			 break;
+		   case 8:
 			 contaAtual = 0;
+			 printf(" \n \n \n \n");
+			 break;
+		   case 9:
+			 printf("\n \n ... | Bye bye |... \n \n");
 			 break;
 		   default:
 		   	 printf(" Opção invalida \n Digite um numero valido \n");
 		     break;
 		}
 
-	}while(opcao != 6);
+	}while(opcao != 9);
 
 }
 
@@ -247,25 +262,70 @@ void auxEscolherConta(int numeroconta){
 
 }
 
+Conta dadosConta(int numeroconta){
+	for(int i = 0; i < contascadastradas; i++){
+		if(conta[i].codigo == numeroconta){
+			return conta[i];
+		}
+	}
+}
+
 void efetuarOperacao(){
 	int codigoOperacao;
 	int operacaoEncontrada = 0;
+	float valorMovimentacao;
+	char data[11] , complemento[100];
+	int opcao;
+
 	listarHistoricos();
 	do{
-		printf(" Digite o codigo da operação que deseja ?");
+		printf(" \n Digite o codigo da operação que deseja ? \n ");
 		scanf("%d", &codigoOperacao);
+		setbuf(stdin, NULL);
+
+		printf(" \n Digite o valor da movimentação \n ");
+		scanf("%f", &valorMovimentacao);
+		setbuf(stdin, NULL);
+
+		printf(" \n Digite a data da movimentação no formato 01/01/1999 \n ");
+		fgets(data, 11, stdin);
+		setbuf(stdin, NULL);
+
+		printf(" \n Digite imformações adicionais referente a movimentação \n ");
+		fgets(complemento, 100, stdin);
+		setbuf(stdin, NULL);
 
 		operacaoEncontrada = buscaHistorico(codigoOperacao);
 		movimentacao[movimentacaocadastradas].historico = historico[(operacaoEncontrada - 1)];
+		movimentacao[movimentacaocadastradas].conta = dadosConta(contaAtual);
+		movimentacao[movimentacaocadastradas].valor = valorMovimentacao;
+		strcpy(movimentacao[movimentacaocadastradas].complemento,complemento);
+		parseData(data,
+			&movimentacao[movimentacaocadastradas].dia ,
+			&movimentacao[movimentacaocadastradas].mes ,
+			&movimentacao[movimentacaocadastradas].ano);
 
-		/*
-		printf("1 - %d \n" , movimentacao[movimentacaocadastradas].historico.codigo );
-		printf("2 - %s \n" , movimentacao[movimentacaocadastradas].historico.descricao );
-		printf("3 - %s \n" , movimentacao[movimentacaocadastradas].historico.tipo );
-		*/
+		movimentacaocadastradas++;
 
-	}while(operacaoEncontrada);
+		printf(" Caso deseja não efetuar mais alguma operação 1 - sair ou qualquer tecla para continuar ... \n\n");
+		scanf("%d", &opcao);
 
+	}while(opcao != 1);
+
+}
+
+void exibirSaldo(){
+	float saldo = 0;
+	for(int h = 0 ; h < movimentacaocadastradas; h++){
+		if(movimentacao[h].conta.codigo == dadosConta(contaAtual).codigo){
+			if(strcmp(movimentacao[h].historico.tipo,CODDEBITO) == 0){
+				saldo = saldo - movimentacao[h].valor;
+			}else{
+				saldo = saldo + movimentacao[h].valor;
+			}
+		}
+	}
+	printf(" \n Seu saldo atual é de R$ %.2f.", saldo);
 }
 
 int buscaHistorico(int codigo){
@@ -301,6 +361,43 @@ void listarHistoricos(){
 	}
 }
 
+void listarMovimentacoes(){
+	char descricaoTipo[20];
+
+	if(movimentacaocadastradas > 0){
+		printf(" \n Lista de Movimentações \n \n");
+		for(int i = 0; i < movimentacaocadastradas; i++){
+			if(movimentacao[i].conta.codigo == dadosConta(contaAtual).codigo){
+				if(strcmp(movimentacao[i].historico.tipo,CODDEBITO) == 0){
+					strcpy(descricaoTipo,"DEBITO");
+				}else{
+					strcpy(descricaoTipo,"CREDITO");
+				}
+
+				printf("Descrição \t %s \n", movimentacao[i].historico.descricao);
+				printf("Data \t %d  %d  %d \n",
+						movimentacao[i].dia,
+						movimentacao[i].mes,
+						movimentacao[i].ano
+				);
+
+				printf("Tipo \t %s \n", descricaoTipo);
+				printf("Complemento \t %s \n", movimentacao[i].complemento);
+				printf("Valor \t %.2f \n", movimentacao[i].valor);
+				printf(" \n \n");
+			}
+		}
+	}else{
+		printf(" Não existe nenhuma historico cadastrado \n \n");
+	}
+}
+
+/*
+void auxListarMovimentacoes(){
+
+}
+*/
+
 void listarContas(){
 	if(contascadastradas > 0){
 		for(int i = 0; i < contascadastradas; i++){
@@ -309,6 +406,46 @@ void listarContas(){
 	}else{
 		printf(" N�o possui nenhuma conta cadastrada \n");
 	}
+
+}
+
+
+void parseData(char data[11], int *dia , int *mes , int *ano)
+{
+
+	// 01/01/1999
+
+	// 0, 1 = dia
+	// 2    = /
+	// 3, 4 = mes
+	// 5    = /
+	// 6, 7 , 8 , 9 = ano
+	// 10    = NULO
+
+	char _dia[3] = {
+		data[0],
+		data[1],
+		0
+	};
+	char _mes[3] = {
+		data[3],
+		data[4],
+		0
+	};
+	char _ano[5] = {
+		data[6],
+		data[7],
+		data[8],
+		data[9],
+		0
+	};
+
+
+	*dia = atoi(_dia);
+	*mes = atoi(_mes);
+	*ano = atoi(_ano);
+
+	return;
 
 }
 
