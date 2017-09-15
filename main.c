@@ -70,8 +70,8 @@ int main(){
 
 	printf(" Menu Principal !! \n \n");
 
-	testInsertDadosConta();
-	testInsertDadosHistorico();
+	//testInsertDadosConta();
+	//testInsertDadosHistorico();
 	//listarContas();
 
 	do{
@@ -326,7 +326,8 @@ void exibirSaldo(){
 		}
 	}
 
-	printf(" \n Seu saldo atual é de R$ %s %.2f.", saldo , ((saldo < 0) ? "-" : " "));
+	 /* printf(" \n Seu saldo atual é de R$ %c %.2f.", (saldo < 0) ? '-' : ' ' , saldo); */
+	printf(" \n Seu saldo atual é de R$ %c %.2f.", (saldo < 0) ? '-' : ' ' , saldo);
 }
 
 int buscaHistorico(int codigo){
