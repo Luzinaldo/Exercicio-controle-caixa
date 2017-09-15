@@ -70,8 +70,8 @@ int main(){
 
 	printf(" Menu Principal !! \n \n");
 
-	testInsertDadosConta();
-	testInsertDadosHistorico();
+	//testInsertDadosConta();
+	//testInsertDadosHistorico();
 	//listarContas();
 
 	do{
