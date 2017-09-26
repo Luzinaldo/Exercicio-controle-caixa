@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <locale.h>
+#include <time.h>
 
 #define TAMCONTA 100
 #define TAMMOVIMENTACAO 100
@@ -31,7 +32,10 @@ typedef struct{
 /* funções conta */
 void listarContas();
 void cadastrarConta();
+void alterarConta();
+void excluirConta();
 void auxEscolherConta(int numeroconta);
+int buscaConta(int numeroconta);
 Conta dadosConta(int numeroconta);
 void escolherConta();
 void exibirSaldo();
@@ -44,6 +48,12 @@ void efetuarOperacao();
 
 /* funções listar movimentação */
 void listarMovimentacoes();
+
+/* Transações */
+void transacaoHoje();
+void minhaTransacaoHoje();
+void minhaTransacaoFiltroDia();
+
 
 /* função auxiliar */
 void parseData(char data[11], int *dia , int *mes , int *ano);
@@ -67,6 +77,11 @@ int main(){
 	int opcao;
 	setlocale(LC_ALL, "portuguese");
 
+	char dataatual [9];
+
+	_strdate(dataatual);
+	printf("%s",dataatual);
+
 
 	printf(" Menu Principal !! \n \n");
 
@@ -79,16 +94,24 @@ int main(){
 			printf(" %s \n" , dadosConta(contaAtual).descricao);
 		}
 		printf(" 1 - Cadastrar conta \n");
-		printf(" 2 - Escolher conta \n");
-		printf(" 3 - Lista de historico \n");
-		printf(" 4 - Cadastrar historico \n \n");
+		printf(" 2 - Excluir conta \n");
+		printf(" 3 - Escolher conta \n");
+		printf(" 4 - Listar contas \n");
+		printf("\n ***************** \n");
+		printf(" 4 - Transações do dia \n");
+		printf("\n ***************** \n");
+		printf(" 5 - Lista de historico \n");
+		printf(" 6 - Cadastrar historico \n \n");
 		if(contaAtual != 0){
-			printf(" 5 - Efetuar operação \n");
-			printf(" 6 - Listar minhas movimentações \n");
-			printf(" 7 - Meu saldo \n");
-			printf(" 8 - Sair da conta \n \n");
+			printf(" 7 - Efetuar operação \n");
+			printf(" 8 - Listar minhas movimentações \n");
+			printf(" 1 - Alterar minha conta \n");
+			printf(" 9 - Meu saldo \n");
+			printf(" 9 - Minhas transações de hoje \n");
+			printf(" 9 - Minhas transações (Filtro Data) \n");
+			printf(" 10 - Sair da conta \n \n");
 		}
-		printf(" 9 - Sair do Sistema \n");
+		printf(" 11 - Sair do Sistema \n");
 
 
 		scanf("%d", &opcao);
@@ -100,28 +123,31 @@ int main(){
 			 cadastrarConta();
 			 break;
 		   case 2:
-			 escolherConta();
+			 excluirConta();
 			 break;
 		   case 3:
-			 listarHistoricos();
+			 escolherConta();
 			 break;
 		   case 4:
-			 cadastrarHistorico();
+			 listarHistoricos();
 			 break;
 		   case 5:
+			 cadastrarHistorico();
+			 break;
+		   case 6:
 		     efetuarOperacao();
 		     break;
-		   case 6:
+		   case 7:
 			 listarMovimentacoes();
 			 break;
-		   case 7:
+		   case 8:
 			 exibirSaldo();
 			 break;
-		   case 8:
+		   case 9:
 			 contaAtual = 0;
 			 printf(" \n \n \n \n");
 			 break;
-		   case 9:
+		   case 10:
 			 printf("\n \n ... | Bye bye |... \n \n");
 			 break;
 		   default:
@@ -129,7 +155,7 @@ int main(){
 		     break;
 		}
 
-	}while(opcao != 9);
+	}while(opcao != 10);
 
 }
 
@@ -173,6 +199,70 @@ void cadastrarConta(){
 		   break;
 		}
 	}while(opcao != 2);
+}
+
+void alterarConta(){
+	int opcaoAlterar;
+	int index = buscaConta(contaAtual);
+	--index;
+	printf("Deseja alterar o codigo ? \n 1 - Sim \n 0 - Não \n");
+	scanf("%d",&opcaoAlterar);
+	setbuf(stdin, NULL);
+	if(opcaoAlterar){
+		printf("Digite o codigo da conta");
+		scanf("%d",conta[index].codigo);
+		setbuf(stdin, NULL);
+		opcaoAlterar = 0;
+	}
+	printf("Deseja alterar a descrição ? \n 1 - Sim \n 0 - Não \n");
+	scanf("%d",&opcaoAlterar);
+	setbuf(stdin, NULL);
+	if(opcaoAlterar){
+		printf("Digite a descrição da conta");
+		fgets(conta[index].descricao, 100, stdin);
+		setbuf(stdin, NULL);
+	}
+
+	printf("Conta alterada com sucesso !! \n");
+}
+
+void excluirConta(){
+	int removerconta;
+	int contaencontrada = 0;
+
+	printf("Digite o codigo da conta que deseja remover : \n");
+	scanf("%d",&removerconta);
+
+	for(int i=0;i < contascadastradas;i++)
+	{
+	    if(conta[i].codigo == removerconta)
+	    {
+	       contaencontrada = 1;
+
+	       for(int j=i; j<contascadastradas-1; j++){
+	    	   conta[j].codigo = conta[j+1].codigo;
+	    	   strcpy(conta[j].descricao, conta[j+1].descricao);
+	       }
+	       contascadastradas--;
+	    }
+	}
+
+	if(contaencontrada){
+		printf("Conta deletada com sucesso : \n");
+	}else{
+		printf("Conta não encontrada : \n");
+	}
+
+}
+
+void listarContas(){
+	if(contascadastradas > 0){
+		for(int i = 0; i < contascadastradas; i++){
+			printf("%d - %s \n", conta[i].codigo , conta[i].descricao );
+		}
+	}else{
+		printf(" Não possui nenhuma conta cadastrada \n");
+	}
 }
 
 void cadastrarHistorico(){
@@ -262,12 +352,18 @@ void auxEscolherConta(int numeroconta){
 
 }
 
-Conta dadosConta(int numeroconta){
+int buscaConta(int numeroconta){
 	for(int i = 0; i < contascadastradas; i++){
 		if(conta[i].codigo == numeroconta){
-			return conta[i];
+			return i + 1;
 		}
 	}
+	return 0;
+}
+
+Conta dadosConta(int numeroconta){
+	int index = buscaConta(numeroconta);
+	return conta[--index];
 }
 
 void efetuarOperacao(){
@@ -363,6 +459,47 @@ void listarHistoricos(){
 	}
 }
 
+
+void transacaoHoje(){
+	char datamovimentacao[9];
+	char dataatual [9];
+
+	_strdate(dataatual);
+	char descricaoTipo[20];
+
+		if(movimentacaocadastradas > 0){
+			printf(" \n Lista transações de hoje \n \n");
+			for(int i = 0; i < movimentacaocadastradas; i++){
+				parseData(datamovimentacao,
+						&movimentacao[i].dia ,
+						&movimentacao[i].mes ,
+						&movimentacao[i].ano );
+				if(datamovimentacao == dataatual){
+					if(strcmp(movimentacao[i].historico.tipo,CODDEBITO) == 0){
+						strcpy(descricaoTipo,"DEBITO");
+					}else{
+						strcpy(descricaoTipo,"CREDITO");
+					}
+
+					printf("Descrição \t %s \n", movimentacao[i].historico.descricao);
+					printf("Data \t %d  %d  %d \n",
+							movimentacao[i].dia,
+							movimentacao[i].mes,
+							movimentacao[i].ano
+					);
+
+					printf("Tipo \t %s \n", descricaoTipo);
+					printf("Complemento \t %s \n", movimentacao[i].complemento);
+					printf("Valor \t %.2f \n", movimentacao[i].valor);
+					printf(" \n \n");
+				}
+			}
+		}else{
+			printf(" Não existe nenhuma historico cadastrado \n \n");
+
+		}
+}
+
 void listarMovimentacoes(){
 	char descricaoTipo[20];
 
@@ -399,17 +536,6 @@ void auxListarMovimentacoes(){
 
 }
 */
-
-void listarContas(){
-	if(contascadastradas > 0){
-		for(int i = 0; i < contascadastradas; i++){
-			printf("%d - %s \n", conta[i].codigo , conta[i].descricao );
-		}
-	}else{
-		printf(" N�o possui nenhuma conta cadastrada \n");
-	}
-
-}
 
 
 void parseData(char data[11], int *dia , int *mes , int *ano)
