@@ -1,9 +1,9 @@
-
 # Created by https://www.gitignore.io/api/eclipse
 
 ### Eclipse ###
 
 .metadata
+Debug/
 bin/
 tmp/
 *.tmp
