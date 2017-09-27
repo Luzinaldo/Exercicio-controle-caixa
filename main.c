@@ -5,6 +5,7 @@
 #include <time.h>
 
 #define TAMCONTA 100
+#define QTDMAXIMAMOVIMENTACAODIA 20
 #define TAMMOVIMENTACAO 100
 #define TAMHISTORICO 10
 #define CODDEBITO "D"
@@ -47,11 +48,11 @@ int buscaHistorico(int codigo);
 void efetuarOperacao();
 
 /* funções listar movimentação */
-
 void listarMovimentacoes();
 void movimentacoesHoje();
 void minhasMovimentacoesHoje();
 void minhasMovimentacoesFiltroDia();
+int verificaSeExecedeuMovimentacoes(char data[11]);
 void _listagemMovimentacaoComFiltro(char filtroData[11] , char tipoData[2] , int filtroIndexConta);
 
 /* função auxiliar */
@@ -80,10 +81,10 @@ int main(){
 
 	printf(" Menu Principal !! \n \n");
 
-	testInsertDadosConta();
-	testInsertDadosHistorico();
-	testInsertDadosMovimentacao();
-	contaAtual = 123;
+	//testInsertDadosConta();
+	//testInsertDadosHistorico();
+	//testInsertDadosMovimentacao();
+	//contaAtual = 123;
 	//movimentacoesHoje();
 	//listarContas();
 
@@ -379,6 +380,32 @@ Conta dadosConta(int numeroconta){
 	return conta[--index];
 }
 
+int verificaSeExecedeuMovimentacoes(char data[11]){
+	int qtdmovimentacao = 0;
+	int diadata , mesdata, anodata;
+
+	parseData(data, &diadata, &mesdata , &anodata);
+
+	if(movimentacaocadastradas > 0){
+		for(int i = 0; i < movimentacaocadastradas; i++){
+			/*  */
+			if(!(movimentacao[i].dia == diadata &&
+			   movimentacao[i].mes == mesdata &&
+			   movimentacao[i].ano == anodata )){
+
+				qtdmovimentacao++;
+			}
+		}
+	}
+
+	if(qtdmovimentacao <= QTDMAXIMAMOVIMENTACAODIA){
+		return 0;
+	}
+	
+	return 1;
+
+}
+
 void efetuarOperacao(){
 	int codigoOperacao;
 	int operacaoEncontrada = 0;
@@ -399,6 +426,10 @@ void efetuarOperacao(){
 		printf(" \n Digite a data da movimentação no formato 01/01/1999 \n ");
 		fgets(data, 11, stdin);
 		setbuf(stdin, NULL);
+		if(verificaSeExecedeuMovimentacoes(data)){
+			printf(" \n Limite de movimentações para esta dia excedeu !! \n ");
+			main();
+		}
 
 		printf(" \n Digite imformações adicionais referente a movimentação \n ");
 		fgets(complemento, 100, stdin);
@@ -766,5 +797,4 @@ void testInsertDadosMovimentacao(){
 	movimentacaocadastradas = 4;
 
 }
-
 
