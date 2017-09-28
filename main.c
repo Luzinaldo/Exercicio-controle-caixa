@@ -5,7 +5,7 @@
 #include <time.h>
 
 #define TAMCONTA 100
-#define QTDMAXIMAMOVIMENTACAODIA 20
+#define QTDMAXIMAMOVIMENTACAODIA 3
 #define TAMMOVIMENTACAO 100
 #define TAMHISTORICO 10
 #define CODDEBITO "D"
@@ -382,7 +382,7 @@ Conta dadosConta(int numeroconta){
 
 int verificaSeExecedeuMovimentacoes(char data[11]){
 	int qtdmovimentacao = 0;
-	int diadata , mesdata, anodata;
+	int diadata = 0, mesdata = 0, anodata = 0;
 
 	parseData(data, &diadata, &mesdata , &anodata);
 
@@ -399,10 +399,10 @@ int verificaSeExecedeuMovimentacoes(char data[11]){
 	}
 
 	if(qtdmovimentacao <= QTDMAXIMAMOVIMENTACAODIA){
-		return 0;
+		return 1;
 	}
 	
-	return 1;
+	return 0;
 
 }
 
@@ -426,7 +426,7 @@ void efetuarOperacao(){
 		printf(" \n Digite a data da movimentação no formato 01/01/1999 \n ");
 		fgets(data, 11, stdin);
 		setbuf(stdin, NULL);
-		if(verificaSeExecedeuMovimentacoes(data)){
+		if(!verificaSeExecedeuMovimentacoes(data)){
 			printf(" \n Limite de movimentações para esta dia excedeu !! \n ");
 			main();
 		}
