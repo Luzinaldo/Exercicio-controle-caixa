@@ -724,7 +724,6 @@ void parseDataUSA(char data[11], int *dia , int *mes , int *ano)
 
 }
 
-
 /* funções teste rapido */
 
 void testInsertDadosConta(){
