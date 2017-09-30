@@ -203,10 +203,14 @@ void cadastrarConta(){
 		{
 
 		 case 1:
-		   efetuarOperacao();
+			contaAtual = codigo;
+			if(historicoscadastrados == 0){
+				printf("\n  Não existe nenhum historico cadastrado \n \n ");
+				return;
+			}
+		    efetuarOperacao();
 		   break;
 		 case 2:
-		   main();
 		   break;
 		 default:
         	 printf(" Opção invalida \n Digite um numero valido \n");
@@ -414,6 +418,10 @@ void efetuarOperacao(){
 
 	listarHistoricos();
 
+	if(historicoscadastrados == 0){
+		return;
+	}
+
 	printf(" \n Digite o codigo da operação que deseja ? \n ");
 	scanf("%d", &codigoOperacao);
 	setbuf(stdin, NULL);
@@ -496,7 +504,7 @@ void listarHistoricos(){
 			}
 			printf(" \n \n");
 	}else{
-		printf(" Não existe nenhuma historico cadastrado \n \n");
+		printf(" Não existe nenhum historico cadastrado \n \n");
 	}
 }
 
