@@ -81,10 +81,10 @@ int main(){
 
 	printf(" Menu Principal !! \n \n");
 
-	testInsertDadosConta();
-	testInsertDadosHistorico();
-	testInsertDadosMovimentacao();
-	contaAtual = 123;
+	//testInsertDadosConta();
+	//testInsertDadosHistorico();
+	//testInsertDadosMovimentacao();
+	//contaAtual = 123;
 	//movimentacoesHoje();
 	//listarContas();
 
@@ -503,28 +503,37 @@ void listarHistoricos(){
 
 void movimentacoesHoje(){
 	char dataatual[11];
+	char tipoParse[2];
+	strcpy(tipoParse,"U");
+
 	_strdate(dataatual);
-	_listagemMovimentacaoComFiltro(dataatual , "U", 0);
+	_listagemMovimentacaoComFiltro(dataatual , tipoParse, 0);
 }
 
 void minhasMovimentacoesHoje(){
 	int index;
 	char dataatual[11];
+	char tipoParse[2];
+	strcpy(tipoParse,"U");
+
 	_strdate(dataatual);
 
 	index = buscaConta(contaAtual);
-	_listagemMovimentacaoComFiltro(dataatual ,"U", index);
+	_listagemMovimentacaoComFiltro(dataatual ,tipoParse, index);
 }
 
 void minhasMovimentacoesFiltroDia(){
 	int index;
 	char data[11];
+	char tipoParse[2];
+	strcpy(tipoParse,"B");
+
 	printf(" \n Digite o valor do filtro movimentações no formato 01/01/1999 \n ");
 	fgets(data, 11, stdin);
 	setbuf(stdin, NULL);
 
 	index = buscaConta(contaAtual);
-	_listagemMovimentacaoComFiltro(data ,"B", index);
+	_listagemMovimentacaoComFiltro(data ,tipoParse, index);
 }
 
 /*
