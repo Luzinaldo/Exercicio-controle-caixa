@@ -81,10 +81,10 @@ int main(){
 
 	printf(" Menu Principal !! \n \n");
 
-	//testInsertDadosConta();
-	//testInsertDadosHistorico();
-	//testInsertDadosMovimentacao();
-	//contaAtual = 123;
+	testInsertDadosConta();
+	testInsertDadosHistorico();
+	testInsertDadosMovimentacao();
+	contaAtual = 123;
 	//movimentacoesHoje();
 	//listarContas();
 
@@ -318,8 +318,6 @@ void cadastrarHistorico(){
 
 		historicoscadastrados++;
 
-		main();
-
 }
 
 void escolherConta(){
@@ -355,8 +353,6 @@ void auxEscolherConta(int numeroconta){
 			printf("\n \n ");
 			if(booleantentarnovamente == 1){
 				escolherConta();
-			}else{
-				main();
 			}
 		}
 
@@ -381,7 +377,7 @@ Conta dadosConta(int numeroconta){
 }
 
 int verificaSeExecedeuMovimentacoes(char data[11]){
-	int qtdmovimentacao = 0;
+	int qtdmovimentacao = 1;
 	int diadata = 0, mesdata = 0, anodata = 0;
 
 	parseData(data, &diadata, &mesdata , &anodata);
@@ -389,9 +385,9 @@ int verificaSeExecedeuMovimentacoes(char data[11]){
 	if(movimentacaocadastradas > 0){
 		for(int i = 0; i < movimentacaocadastradas; i++){
 			/*  */
-			if(!(movimentacao[i].dia == diadata &&
+			if(movimentacao[i].dia == diadata &&
 			   movimentacao[i].mes == mesdata &&
-			   movimentacao[i].ano == anodata )){
+			   movimentacao[i].ano == anodata ){
 
 				qtdmovimentacao++;
 			}
@@ -399,58 +395,59 @@ int verificaSeExecedeuMovimentacoes(char data[11]){
 	}
 
 	if(qtdmovimentacao <= QTDMAXIMAMOVIMENTACAODIA){
-		return 1;
+		// não excedeu -  FALSE
+		return 0;
 	}
-	
-	return 0;
+
+	// excedeu -  TRUE
+	return 1;
 
 }
 
 void efetuarOperacao(){
 	int codigoOperacao;
 	int operacaoEncontrada = 0;
+	int verificador;
 	float valorMovimentacao;
 	char data[11] , complemento[100];
 	int opcao;
 
 	listarHistoricos();
-	do{
-		printf(" \n Digite o codigo da operação que deseja ? \n ");
-		scanf("%d", &codigoOperacao);
-		setbuf(stdin, NULL);
 
-		printf(" \n Digite o valor da movimentação \n ");
-		scanf("%f", &valorMovimentacao);
-		setbuf(stdin, NULL);
+	printf(" \n Digite o codigo da operação que deseja ? \n ");
+	scanf("%d", &codigoOperacao);
+	setbuf(stdin, NULL);
 
-		printf(" \n Digite a data da movimentação no formato 01/01/1999 \n ");
-		fgets(data, 11, stdin);
-		setbuf(stdin, NULL);
-		if(!verificaSeExecedeuMovimentacoes(data)){
-			printf(" \n Limite de movimentações para esta dia excedeu !! \n ");
-			main();
-		}
+	printf(" \n Digite o valor da movimentação \n ");
+	scanf("%f", &valorMovimentacao);
+	setbuf(stdin, NULL);
 
-		printf(" \n Digite imformações adicionais referente a movimentação \n ");
-		fgets(complemento, 100, stdin);
-		setbuf(stdin, NULL);
+	printf(" \n Digite a data da movimentação no formato 01/01/1999 \n ");
+	fgets(data, 12, stdin);
+	setbuf(stdin, NULL);
+	verificador = verificaSeExecedeuMovimentacoes(data);
+	if(verificador){
+		printf(" \n Limite de movimentações para esta dia excedeu !! \n ");
+		return;
+	}
 
-		operacaoEncontrada = buscaHistorico(codigoOperacao);
-		movimentacao[movimentacaocadastradas].historico = historico[(operacaoEncontrada - 1)];
-		movimentacao[movimentacaocadastradas].conta = dadosConta(contaAtual);
-		movimentacao[movimentacaocadastradas].valor = valorMovimentacao;
-		strcpy(movimentacao[movimentacaocadastradas].complemento,complemento);
-		parseData(data,
-			&movimentacao[movimentacaocadastradas].dia ,
-			&movimentacao[movimentacaocadastradas].mes ,
-			&movimentacao[movimentacaocadastradas].ano);
+	printf(" \n Digite imformações adicionais referente a movimentação \n ");
+	fgets(complemento, 100, stdin);
+	setbuf(stdin, NULL);
 
-		movimentacaocadastradas++;
+	operacaoEncontrada = buscaHistorico(codigoOperacao);
+	movimentacao[movimentacaocadastradas].historico = historico[(operacaoEncontrada - 1)];
+	movimentacao[movimentacaocadastradas].conta = dadosConta(contaAtual);
+	movimentacao[movimentacaocadastradas].valor = valorMovimentacao;
+	strcpy(movimentacao[movimentacaocadastradas].complemento,complemento);
+	parseData(data,
+		&movimentacao[movimentacaocadastradas].dia ,
+		&movimentacao[movimentacaocadastradas].mes ,
+		&movimentacao[movimentacaocadastradas].ano);
 
-		printf(" Caso deseja não efetuar mais alguma operação 1 - sair ou qualquer tecla para continuar ... \n\n");
-		scanf("%d", &opcao);
+	movimentacaocadastradas++;
+	printf(" \n \n ");
 
-	}while(opcao != 1);
 
 }
 
