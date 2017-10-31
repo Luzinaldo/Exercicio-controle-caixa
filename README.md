@@ -8,4 +8,3 @@ Sistema de controle de caixa
 -- Cadastro de Movimentação
 -- Movimentações (filtro por dia)
 
-sistema de caráter acadêmico
