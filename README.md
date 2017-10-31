@@ -1,3 +1,11 @@
-# Exercicio-controle-caixa
-# Sistema de controle de caixa de uma grupo de pessoas
-# Auxilia no controle de caixa
+# Exercicio controle caixa
+
+Sistema de controle de caixa
+(não possuiu persistência de dados)
+
+-- Cadastro de usuarios
+-- Cadastro de historico
+-- Cadastro de Movimentação
+-- Movimentações (filtro por dia)
+
+sistema de caráter acadêmico
